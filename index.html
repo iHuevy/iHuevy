@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>iHuevy Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Press Start 2P", monospace;}
+
+body{background:black;color:#d8d8d8;overflow-x:hidden;}
+
+video{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:brightness(45%);}
+
+.panel{
+width:90%;
+max-width:1150px;
+margin:70px auto;
+padding:45px;
+background:rgba(10,10,10,.45);
+border-radius:20px;
+border:1px solid rgba(255,255,255,.15);
+backdrop-filter:blur(10px);
+}
+
+nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:60px;}
+
+.logo{font-size:12px;display:flex;gap:10px;align-items:center;}
+
+.logo i{color:gold;}
+
+nav ul{display:flex;gap:30px;list-style:none;}
+
+nav a{
+color:#cfcfcf;
+text-decoration:none;
+cursor:pointer;
+position:relative;
+transition:.25s;
+}
+
+nav a i{transition:.25s;}
+
+nav a:hover i{
+transform:scale(1.2);
+text-shadow:0 0 10px white;
+}
+
+nav a:hover{color:white;}
+
+nav a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-6px;
+width:0%;
+height:2px;
+background:white;
+transition:.25s;
+}
+
+nav a:hover::after{width:100%;}
+
+.hero{
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:40px;
+}
+
+.hero h1{font-size:46px;line-height:1.5;margin-bottom:20px;}
+
+.hero p{
+max-width:520px;
+line-height:1.6;
+color:#bfbfbf;
+margin-bottom:25px;
+font-size:12px;
+}
+
+.main-btn{
+background:white;
+color:black;
+border:none;
+padding:14px 28px;
+border-radius:8px;
+cursor:pointer;
+transition:.25s;
+}
+
+.main-btn:hover{transform:translateY(-3px);box-shadow:0 0 10px white;}
+
+.socials{display:flex;gap:15px;margin-top:25px;}
+
+.socials a{
+width:55px;
+height:55px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:14px;
+background:rgba(0,0,0,.55);
+border:1px solid rgba(255,255,255,.25);
+font-size:22px;
+transition:.25s;
+text-decoration:none;
+}
+
+.discord i{color:#5865F2;}
+.instagram i{color:#E1306C;}
+.github i{color:white;}
+.namemc i{color:#00aaff;}
+
+.discord:hover i{text-shadow:0 0 15px #5865F2;}
+.instagram:hover i{text-shadow:0 0 15px #E1306C;}
+.github:hover i{text-shadow:0 0 15px white;}
+.namemc:hover i{text-shadow:0 0 15px #00aaff;}
+
+.socials a:hover{transform:translateY(-4px);}
+
+.avatar{
+width:200px;
+height:200px;
+border-radius:50%;
+overflow:hidden;
+box-shadow:0 0 25px rgba(255,255,255,.2);
+animation:float 5s ease-in-out infinite;
+}
+
+.avatar img{width:100%;height:100%;object-fit:cover;}
+
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-12px)}
+100%{transform:translateY(0)}
+}
+
+section{margin-top:90px;display:none;border-top:1px solid rgba(255,255,255,.15);padding-top:40px;}
+
+section.active{display:block;}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+padding:22px;
+background:rgba(20,20,20,.5);
+border-radius:12px;
+border:1px solid rgba(255,255,255,.15);
+position:relative;
+}
+
+.card h3{font-size:11px;margin-bottom:10px;}
+
+.card p{font-size:10px;color:#bfbfbf;line-height:1.6;}
+
+.add-btn{
+margin-top:20px;
+background:white;
+color:black;
+border:none;
+padding:10px 16px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.delete-btn{
+position:absolute;
+top:10px;
+right:10px;
+background:red;
+border:none;
+color:white;
+padding:4px 8px;
+cursor:pointer;
+}
+
+.login-btn{
+position:fixed;
+top:20px;
+right:20px;
+font-size:24px;
+cursor:pointer;
+z-index:10000;
+}
+
+.login-box{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111;
+padding:30px;
+border-radius:12px;
+border:1px solid #444;
+display:none;
+z-index:9999;
+}
+
+.login-box input{
+width:100%;
+padding:10px;
+margin-top:10px;
+background:#222;
+border:none;
+color:white;
+}
+
+.owner-error{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(255,0,0,.15);
+border:1px solid rgba(255,0,0,.5);
+padding:25px 40px;
+border-radius:12px;
+color:#ff5b5b;
+font-size:12px;
+display:none;
+z-index:9999;
+text-align:center;
+backdrop-filter:blur(6px);
+}
+
+.music-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+font-size:28px;
+cursor:pointer;
+color:white;
+}
+
+.popup{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111;
+padding:25px;
+border-radius:12px;
+border:1px solid #555;
+display:none;
+z-index:9999;
+}
+
+.popup input{
+width:100%;
+margin:8px 0;
+padding:8px;
+background:#222;
+border:none;
+color:white;
+}
+
+.join-btn{
+margin-top:10px;
+background:#5865F2;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.join-btn:hover{
+box-shadow:0 0 10px #5865F2;
+}
+
+.verified{
+color:#00ff6a;
+font-size:9px;
+margin-bottom:6px;
+}
+
+.server-icon{
+width:60px;
+border-radius:8px;
+margin-bottom:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<video autoplay loop muted>
+<source src="background.mp4" type="video/mp4">
+</video>
+
+<audio id="bgMusic" autoplay loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music-btn" onclick="toggleMusic()" id="musicIcon">
+<i class="fa-solid fa-volume-high"></i>
+</div>
+
+<div class="login-btn" onclick="openLogin()" id="userIcon">
+<i class="fa-solid fa-user"></i>
+</div>
+
+<div class="login-box" id="loginBox">
+<input type="password" id="passInput" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<div class="owner-error" id="ownerError">Ur Not the Owner Foll</div>
+
+<div class="popup" id="projectPopup">
+<input id="pName" placeholder="Project Name">
+<input id="pDesc" placeholder="Description">
+<input id="pLink" placeholder="Link">
+<button onclick="createProject()">Create</button>
+</div>
+
+<div class="popup" id="serverPopup">
+<input id="sName" placeholder="Server Name">
+<input id="sDesc" placeholder="Description">
+<input id="sLink" placeholder="Discord Invite">
+<input id="sImg" placeholder="Server Image URL">
+<label><input type="checkbox" id="sVerified"> Verified</label>
+<button onclick="createServer()">Create</button>
+</div>
+
+<div class="panel">
+
+<nav>
+
+<div class="logo">
+<i class="fa-solid fa-crown"></i> iHuevy
+</div>
+
+<ul>
+<li><a onclick="openTab('home')"><i class="fa-solid fa-house"></i></a></li>
+<li><a onclick="openTab('skills')"><i class="fa-solid fa-screwdriver-wrench"></i></a></li>
+<li><a onclick="openTab('projects')"><i class="fa-solid fa-box"></i></a></li>
+<li><a onclick="openTab('servers')"><i class="fa-solid fa-globe"></i></a></li>
+</ul>
+
+</nav>
+
+<section id="home" class="active">
+<div class="hero">
+
+<div>
+
+<h1>Minecraft<br>Developer</h1>
+
+<p>I build custom Minecraft servers, gameplay systems and advanced SMP mechanics.</p>
+
+<button class="main-btn">Contact Me</button>
+
+<div class="socials">
+
+<a class="discord"><i class="fa-brands fa-discord"></i></a>
+
+<a class="instagram" href="https://instagram.com/i0lks" target="_blank">
+<i class="fa-brands fa-instagram"></i>
+</a>
+
+<a class="github" href="https://github.com/iHuevy" target="_blank">
+<i class="fa-brands fa-github"></i>
+</a>
+
+<a class="namemc" href="https://namemc.com/profile/iHuevy" target="_blank">
+<i class="fa-solid fa-diamond"></i>
+</a>
+
+</div>
+
+</div>
+
+<div class="avatar">
+<img src="./profile.gif">
+</div>
+
+</div>
+</section>
+
+<section id="skills">
+
+<h2>Skills</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3><i class="fa-brands fa-html5"></i> HTML / CSS</h3>
+<p>Frontend web development</p>
+</div>
+
+<div class="card">
+<h3><i class="fa-brands fa-js"></i> JavaScript</h3>
+<p>Interactive websites</p>
+</div>
+
+<div class="card">
+<h3><i class="fa-solid fa-server"></i> Minecraft Servers</h3>
+<p>Custom SMP systems</p>
+</div>
+
+</div>
+</section>
+
+<section id="projects">
+
+<h2>Projects</h2>
+
+<div class="grid" id="projectGrid"></div>
+
+<button class="add-btn" onclick="openProjectPanel()">Add Project</button>
+
+</section>
+
+<section id="servers">
+
+<h2>Servers</h2>
+
+<div class="grid" id="serverGrid"></div>
+
+<button class="add-btn" onclick="openServerPanel()">Add Server</button>
+
+</section>
+
+</div>
+
+<script>
+
+function openTab(id){
+document.querySelectorAll("section").forEach(sec=>sec.classList.remove("active"))
+document.getElementById(id).classList.add("active")
+}
+
+let owner=false
+const PASSWORD="1985"
+
+function openLogin(){
+document.getElementById("loginBox").style.display="block"
+}
+
+function login(){
+
+let pass=document.getElementById("passInput").value
+
+if(pass===PASSWORD){
+owner=true
+document.getElementById("loginBox").style.display="none"
+document.getElementById("userIcon").style.color="#00aaff"
+}else{
+
+let error=document.getElementById("ownerError")
+error.style.display="block"
+
+setTimeout(()=>{error.style.display="none"},2000)
+
+}
+
+}
+
+function openProjectPanel(){
+if(!owner)return
+document.getElementById("projectPopup").style.display="block"
+}
+
+function createProject(){
+
+let name=document.getElementById("pName").value
+let desc=document.getElementById("pDesc").value
+let link=document.getElementById("pLink").value
+
+let card=document.createElement("div")
+card.className="card"
+
+card.innerHTML=`
+<button class="delete-btn" onclick="this.parentElement.remove()">X</button>
+<h3>${name}</h3>
+<p>${desc}</p>
+<a href="${link}" target="_blank"><button class="main-btn">Open</button></a>
+`
+
+document.getElementById("projectGrid").appendChild(card)
+
+document.getElementById("projectPopup").style.display="none"
+
+}
+
+function openServerPanel(){
+if(!owner)return
+document.getElementById("serverPopup").style.display="block"
+}
+
+function createServer(){
+
+let name=document.getElementById("sName").value
+let desc=document.getElementById("sDesc").value
+let link=document.getElementById("sLink").value
+let img=document.getElementById("sImg").value
+let verified=document.getElementById("sVerified").checked
+
+let badge=verified?'<div class="verified">✔ VERIFIED</div>':""
+
+let card=document.createElement("div")
+card.className="card"
+
+card.innerHTML=`
+<button class="delete-btn" onclick="this.parentElement.remove()">X</button>
+<img src="${img}" class="server-icon">
+${badge}
+<h3>${name}</h3>
+<p>${desc}</p>
+<a href="${link}" target="_blank">
+<button class="join-btn"><i class="fa-brands fa-discord"></i> Join</button>
+</a>
+`
+
+document.getElementById("serverGrid").appendChild(card)
+
+document.getElementById("serverPopup").style.display="none"
+
+}
+
+const music=document.getElementById("bgMusic")
+const icon=document.getElementById("musicIcon")
+
+function toggleMusic(){
+
+if(music.paused){
+music.play()
+icon.innerHTML='<i class="fa-solid fa-volume-high"></i>'
+}else{
+music.pause()
+icon.innerHTML='<i class="fa-solid fa-volume-xmark"></i>'
+}
+
+}
+
+</script>
+
+</body>
+</html>
